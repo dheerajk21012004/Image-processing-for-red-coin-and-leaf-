@@ -7,13 +7,6 @@ A MATLAB-based image processing pipeline for segmenting, measuring, and analysin
 
 ---
 
-## 📸 Example Output
-
-| Input Image | Multi-Leaf Detection Output |
-|:-----------:|:---------------------------:|
-| ![Leaf and coin photograph](leaf_and_coin.jpg) | Annotated with leaf count, area (mm²), and GLI per leaf |
-
-Output images from Task I show detected leaves labelled with area and Green Leaf Index (GLI) values across 25 multi-leaf test images containing 3–7 leaves each.
 
 ---
 
