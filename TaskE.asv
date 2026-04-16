@@ -1,0 +1,44 @@
+%% Task E – RGB Histograms and Separate Entry-wise Product Images
+% Prerequisites:
+%   I               → original RGB image
+%   BW_leaf_clean   → cleaned leaf mask
+%   BW_coin_clean   → cleaned coin mask
+load('cleanMasks.mat');  % now BW_leaf_clean etc. exist
+
+% --- 1. Entry-wise products (segmented color images) ---
+leaf_segmented = I .* uint8(BM_leaf_clean);   % keeps only leaf pixels
+coin_segmented = I .* uint8(BM_coin_clean);   % keeps only coin pixels
+
+figure;
+subplot(1,2,1); imshow(leaf_segmented); title('Leaf Only (Entry-wise Product)');
+subplot(1,2,2); imshow(coin_segmented); title('Coin Only (Entry-wise Product)');
+
+% --- 2. RGB histograms using the cleaned masks ---
+plotRGBHistogram(I, BW_leaf_clean, 'Leaf');
+plotRGBHistogram(I, BW_coin_clean, 'Coin');
+
+% --- Helper function (keep at the end of the script or as a separate file) ---
+function plotRGBHistogram(I, mask, objectName)
+    % Extract channels
+    R = I(:,:,1); G = I(:,:,2); B = I(:,:,3);
+    % Select pixels belonging to the object
+    Rvals = R(mask); Gvals = G(mask); Bvals = B(mask);
+    % Histogram (0–255 bins)
+    bins = 0:255;
+    hR = histcounts(Rvals,bins);
+    hG = histcounts(Gvals,bins);
+    hB = histcounts(Bvals,bins);
+    % Normalise
+    hR = hR / max(hR);
+    hG = hG / max(hG);
+    hB = hB / max(hB);
+    % Plot
+    figure; hold on;
+    plot(bins(1:end-1),hR,'r','LineWidth',1.5);
+    plot(bins(1:end-1),hG,'g','LineWidth',1.5);
+    plot(bins(1:end-1),hB,'b','LineWidth',1.5);
+    xlim([0 255]); ylim([0 1]);
+    xlabel('Intensity (0–255)'); ylabel('Normalised Frequency');
+    title(['Normalised RGB Histogram – ', objectName]);
+    legend('Red','Green','Blue'); grid on; hold off;
+end
